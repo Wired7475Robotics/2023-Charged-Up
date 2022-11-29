@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import java.net.CacheRequest;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -11,10 +13,10 @@ import frc.robot.Controll;
 import frc.robot.Robot;
 
 public class DriveTrain extends SubsystemBase{
-    private static WPI_VictorSPX leftDrive1;
-    private static WPI_VictorSPX leftDrive2;
-    private static WPI_TalonSRX rightDrive1;
-    private static WPI_TalonSRX rightDrive2;
+    private static CANSparkMax leftDrive1;
+    private static CANSparkMax leftDrive2;
+    private static CANSparkMax rightDrive1;
+    private static CANSparkMax rightDrive2;
     private static double xSpeed;
     private static double zRotation;
     private static MotorControllerGroup m_leftDrive;
@@ -25,10 +27,10 @@ public class DriveTrain extends SubsystemBase{
     private static double HIGH_SPEED_COEFF = 0.7;
     private static double TIMEOUT = 15;
     public DriveTrain() {
-        leftDrive1 = new WPI_VictorSPX(9);
-        leftDrive2 = new WPI_VictorSPX(13);
-        rightDrive1 = new WPI_TalonSRX(14);
-        rightDrive2 = new WPI_TalonSRX(15);
+        leftDrive1 = new CANSparkMax(14, MotorType.kBrushless);
+        leftDrive2 = new CANSparkMax(15, MotorType.kBrushless);
+        rightDrive1 = new CANSparkMax(0, MotorType.kBrushless);
+        rightDrive2 = new CANSparkMax(1, MotorType.kBrushless);
 
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);

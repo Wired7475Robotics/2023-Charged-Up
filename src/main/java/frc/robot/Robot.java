@@ -34,10 +34,6 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   public static DriveTrain drivetrain;
-  public static Shooter shooter;
-  public static Intake intake;
-  public static Pneumatics PnuLifts;
-  public static Lifts lifts;
   public static Encoder leftEncoder;
   public static Encoder rightEncoder;
   public static ShuffleboardTab autoTab;
@@ -48,8 +44,7 @@ public class Robot extends TimedRobot {
   public static Controll oi;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private SequentialCommandGroup autonomusCommands;
-  private SequentialCommandGroup autonomusIntake;
-  private ParallelCommandGroup autonomusShooter;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -63,14 +58,6 @@ public class Robot extends TimedRobot {
     oi = new Controll();
     drivetrain = new DriveTrain();
     drivetrain.setDefaultCommand( new ArcadeDrive());
-    shooter = new Shooter();
-    shooter.setDefaultCommand( new Shoot());
-    intake = new Intake();
-    intake.setDefaultCommand( new RunIntake());
-    PnuLifts = new Pneumatics();
-    PnuLifts.setDefaultCommand( new PneumaticLifts());
-    lifts = new Lifts();
-    lifts.setDefaultCommand( new runLifts());
 
     leftEncoder = new Encoder(2, 3, false , EncodingType.k4X);
     leftEncoder.setDistancePerPulse(18.8 / 2048.0);
@@ -92,10 +79,9 @@ public class Robot extends TimedRobot {
     timer = new Timer();
     timer.start();
 
-    autonomusIntake = new SequentialCommandGroup(new AutoDelay(5), new AutoFeed(5));
-    autonomusShooter = new ParallelCommandGroup(autonomusIntake, new AutoShooter(10));
 
-    autonomusCommands = new SequentialCommandGroup(new AutoDrive(48),  new AutoFeed(5)/*autonomusShooter*/);
+
+    autonomusCommands = new SequentialCommandGroup(new AutoDrive(48));
 
   }
 
