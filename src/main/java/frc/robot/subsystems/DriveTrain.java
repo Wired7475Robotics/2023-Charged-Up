@@ -53,7 +53,7 @@ public class DriveTrain extends SubsystemBase{
         }
 
 
-        drivetrain.arcadeDrive(xSpeed, -zRotation);
+        drivetrain.arcadeDrive(xSpeed*0.5, -zRotation*0.5);
         drivetrain.feed();
     }
 
@@ -66,7 +66,7 @@ public class DriveTrain extends SubsystemBase{
      * @return
      */
     public boolean autoDrive(double target, PIDController drivePid) {
-
+        
         //The linear speed, derived from the pid loop output
         double linear_speed = drivePid.calculate(Robot.leftEncoder.getDistance(), target);
         double angular_error;

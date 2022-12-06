@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
 
 
 
-    autonomusCommands = new SequentialCommandGroup(new AutoDrive(48));
+    //autonomusCommands = new SequentialCommandGroup(new AutoDrive(48));
 
   }
 
