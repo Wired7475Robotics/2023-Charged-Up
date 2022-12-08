@@ -29,7 +29,7 @@ public class DriveTrain extends SubsystemBase{
     public DriveTrain() {
         leftDrive1 = new CANSparkMax(14, MotorType.kBrushless);
         leftDrive2 = new CANSparkMax(15, MotorType.kBrushless);
-        rightDrive1 = new CANSparkMax(0, MotorType.kBrushless);
+        rightDrive1 = new CANSparkMax(2, MotorType.kBrushless);
         rightDrive2 = new CANSparkMax(1, MotorType.kBrushless);
 
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
