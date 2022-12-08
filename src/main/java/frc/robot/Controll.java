@@ -1,12 +1,12 @@
 package frc.robot;
 
-import frc.robot.commands.wiredAPI.Motor;
+//import frc.robot.commands.wiredAPI.Motor;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Controll {
     
-    private static String filePath = Filesystem.getDeployDirectory().getPath();
+    //private static String filePath = Filesystem.getDeployDirectory().getPath();
     private static XboxController driveController;
     private static XboxController opController;
     private static final double DEADZONE = 0.05;
@@ -19,7 +19,7 @@ public class Controll {
     public static final int Y = 5;
 
     public Controll() {
-        Motor.setMotorConfigPath(filePath);
+        //Motor.setMotorConfigPath(filePath);
         driveController = new XboxController(0);
         opController = new XboxController(1);
     }
