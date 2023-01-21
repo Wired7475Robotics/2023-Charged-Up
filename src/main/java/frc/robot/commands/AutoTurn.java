@@ -4,47 +4,46 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class AutoDrive  extends CommandBase{
+public class AutoTurn  extends CommandBase{
     
     private double target = 0;
+    private double finalTarget = 0;
     private boolean isDone = false;
     private boolean targetInit = false;
-    private double kP = 0.5;
-    private double kI = 0;
-    private double kD = 0.05;
+    private double kP = 0.35;
+    private double kI = 0.0;
+    private double kD = 0.045;
     PIDController pid = new PIDController(kP, kI, kD);
-    
 
-    public AutoDrive() {
+
+    public AutoTurn() {
         addRequirements(Robot.drivetrain);
     }
 
-    public AutoDrive(double target_) {
-        addRequirements(Robot.drivetrain);
+    public AutoTurn(double target_) {
         target = target_;
+        addRequirements(Robot.drivetrain);
     }
 
     @Override
     public void initialize() {
-        pid.setSetpoint(target);
-        pid.setTolerance(0.5);
+        pid.setTolerance(0.1);
+        pid.enableContinuousInput(0, 360);
     }
 
     @Override
     public void execute() {
-        if(!targetInit) {
-            Robot.leftEncoder.reset();
-            Robot.rightEncoder.reset();
+        if(!targetInit){
+            finalTarget = Robot.absAngle(Robot.absAngle() + target);
+            pid.setSetpoint(finalTarget);
             targetInit = true;
         }
 
-        isDone = Robot.drivetrain.autoDrive(target, pid);
+        isDone = Robot.drivetrain.autoTurn(finalTarget, pid);
     }
 
    @Override
    public void end(boolean interrupted) {
-       Robot.leftEncoder.reset();
-       Robot.rightEncoder.reset();
    }
 
     @Override

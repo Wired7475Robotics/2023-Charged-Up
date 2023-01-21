@@ -8,7 +8,7 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,17 +34,27 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+  private static final String kCubePipeline = "Cube";
+  private static final String kConePipeline ="Cone";
   public static DriveTrain drivetrain;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   public static Encoder leftEncoder;
   public static Encoder rightEncoder;
-  public static ShuffleboardTab autoTab;
-  NetworkTableEntry leftEncoderData;
-  NetworkTableEntry rightEncoderData;
+  public static ShuffleboardTab autoTab;;
   public static Timer timer;
+  public static AHRS navX;
   private String m_autoSelected;
   public static Controll oi;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  public final SendableChooser<String> v_chooser = new SendableChooser<>();
   private SequentialCommandGroup autonomusCommands;
+<<<<<<< Updated upstream
+=======
+  private SequentialCommandGroup visionCommands;
+>>>>>>> Stashed changes
 
 
   /**
@@ -54,10 +65,16 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
+    v_chooser.setDefaultOption("Cube", kCubePipeline);
+    v_chooser.addOption("Cone", kConePipeline);
     SmartDashboard.putData("Auto choices", m_chooser);
-    oi = new Controll();
+    SmartDashboard.putData("Vision Pipeline", v_chooser);
     drivetrain = new DriveTrain();
     drivetrain.setDefaultCommand( new ArcadeDrive());
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
     leftEncoder = new Encoder(2, 3, false , EncodingType.k4X);
     leftEncoder.setDistancePerPulse(18.8 / 2048.0);
@@ -73,16 +90,32 @@ public class Robot extends TimedRobot {
     rightEncoder.setSamplesToAverage(4);
     rightEncoder.setReverseDirection(true);
 
-    autoTab = Shuffleboard.getTab("PID");
-    leftEncoderData = autoTab.add("Left Encoder", leftEncoder.getDistance()).getEntry();
-    rightEncoderData = autoTab.add("Right Encoder", rightEncoder.getDistance()).getEntry();
     timer = new Timer();
     timer.start();
+    navX = new AHRS();
+    navX.calibrate();
+    navX.reset();
+    SmartDashboard.putNumber("Angle", navX.getAngle());
 
 
+
+<<<<<<< Updated upstream
 
     //autonomusCommands = new SequentialCommandGroup(new AutoDrive(48));
+=======
+    autonomusCommands = new SequentialCommandGroup(
+    new AutoDrive(24),
+    new AutoTurn(45),
+    new AutoDrive(24),
+    new AutoTurn(-45),
+    new AutoDrive(25),
+    new AutoTurn(180)
+    );
+    //visionCommands =  new SequentialCommandGroup(new );
+>>>>>>> Stashed changes
 
+    oi = new Controll();
+    
   }
 
   /**
@@ -94,8 +127,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    leftEncoderData.setDouble(leftEncoder.getDistance());
-    rightEncoderData.setDouble(rightEncoder.getDistance());
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.getDistance());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.getDistance());
+    SmartDashboard.putNumber("Raw Angle", navX.getAngle());
+    SmartDashboard.putNumber("Absolute Angle", absAngle());
   }
 
   /**
@@ -110,6 +145,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    navX.reset();
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
@@ -135,17 +171,19 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
-
+  public void teleopInit() {
   /** This function is called periodically during operator control. */
+  }
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
   }
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
 
+    CommandScheduler.getInstance().cancel(autonomusCommands);
+  }
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {}
@@ -165,4 +203,23 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  public static double absAngle() {
+  double outAngle = navX.getAngle() % 360;
+
+  if(outAngle < 0)
+    outAngle += 360;
+
+  return outAngle;
+  }
+
+  public static double absAngle(double angle) {
+    double outAngle = angle % 360;
+
+    if(outAngle < 0)
+      outAngle += 360;
+  
+    return outAngle;
+    }
+
 }

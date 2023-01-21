@@ -17,6 +17,8 @@ public class ArcadeDrive extends CommandBase {
       @Override
       public void execute() {
         Robot.drivetrain.teleDrive();
+        //Robot.drivetrain.targetCube();
+        //Robot.drivetrain.targetCone();
       }
     
       // Make this return true when this Command no longer needs to run execute()

@@ -3,12 +3,18 @@ package frc.robot;
 //import frc.robot.commands.wiredAPI.Motor;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.VisionDrive;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.MotorSafety;
 
 public class Controll {
     
     //private static String filePath = Filesystem.getDeployDirectory().getPath();
     private static XboxController driveController;
     private static XboxController opController;
+    private static Joystick mouseJoystick;
     private static final double DEADZONE = 0.05;
     private static final double TRIGGER_THRESH = 0.5;
     public static final int RIGHT = 0;
@@ -22,6 +28,15 @@ public class Controll {
         //Motor.setMotorConfigPath(filePath);
         driveController = new XboxController(0);
         opController = new XboxController(1);
+        mouseJoystick = new Joystick(2);
+        JoyTest();
+
+        Trigger followCube = new JoystickButton(driveController, XboxController.Button.kB.value);
+        followCube.debounce(0.1).whileTrue(new VisionDrive());
+    }
+
+    public void JoyTest(){
+        
     }
 
     public static boolean getDriveBumper(int side) {
