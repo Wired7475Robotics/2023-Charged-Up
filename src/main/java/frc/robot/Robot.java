@@ -37,10 +37,6 @@ public class Robot extends TimedRobot {
   private static final String kCubePipeline = "Cube";
   private static final String kConePipeline ="Cone";
   public static DriveTrain drivetrain;
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
   public static Encoder leftEncoder;
   public static Encoder rightEncoder;
   public static ShuffleboardTab autoTab;;
@@ -51,10 +47,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public final SendableChooser<String> v_chooser = new SendableChooser<>();
   private SequentialCommandGroup autonomusCommands;
-<<<<<<< Updated upstream
-=======
   private SequentialCommandGroup visionCommands;
->>>>>>> Stashed changes
 
 
   /**
@@ -71,10 +64,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Vision Pipeline", v_chooser);
     drivetrain = new DriveTrain();
     drivetrain.setDefaultCommand( new ArcadeDrive());
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
     leftEncoder = new Encoder(2, 3, false , EncodingType.k4X);
     leftEncoder.setDistancePerPulse(18.8 / 2048.0);
@@ -99,10 +88,6 @@ public class Robot extends TimedRobot {
 
 
 
-<<<<<<< Updated upstream
-
-    //autonomusCommands = new SequentialCommandGroup(new AutoDrive(48));
-=======
     autonomusCommands = new SequentialCommandGroup(
     new AutoDrive(24),
     new AutoTurn(45),
@@ -112,7 +97,6 @@ public class Robot extends TimedRobot {
     new AutoTurn(180)
     );
     //visionCommands =  new SequentialCommandGroup(new );
->>>>>>> Stashed changes
 
     oi = new Controll();
     

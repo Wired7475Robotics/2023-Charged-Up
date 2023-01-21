@@ -2,17 +2,12 @@ package frc.robot.subsystems;
 
 import java.net.CacheRequest;
 
-<<<<<<< Updated upstream
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-=======
 import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
->>>>>>> Stashed changes
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,17 +18,10 @@ import frc.robot.Controll;
 import frc.robot.Robot;
 
 public class DriveTrain extends SubsystemBase{
-<<<<<<< Updated upstream
-    private static CANSparkMax leftDrive1;
-    private static CANSparkMax leftDrive2;
-    private static CANSparkMax rightDrive1;
-    private static CANSparkMax rightDrive2;
-=======
     private static WPI_TalonSRX leftDrive1;
     private static WPI_TalonSRX leftDrive2;
     private static WPI_TalonSRX rightDrive1;
     private static WPI_TalonSRX rightDrive2;
->>>>>>> Stashed changes
     private static double xSpeed;
     private static double zRotation;
     private static MotorControllerGroup m_leftDrive;
@@ -52,19 +40,11 @@ public class DriveTrain extends SubsystemBase{
     private final double MAX_ROT_SPEEED = 0.25;
     private Timer timer;
     public DriveTrain() {
-<<<<<<< Updated upstream
-        leftDrive1 = new CANSparkMax(14, MotorType.kBrushless);
-        leftDrive2 = new CANSparkMax(15, MotorType.kBrushless);
-        rightDrive1 = new CANSparkMax(2, MotorType.kBrushless);
-        rightDrive2 = new CANSparkMax(1, MotorType.kBrushless);
-
-=======
         timer = new Timer();
         leftDrive1 = new WPI_TalonSRX(15);
         leftDrive2 = new WPI_TalonSRX(14);
         rightDrive1 = new WPI_TalonSRX(13);
         rightDrive2 = new WPI_TalonSRX(12);
->>>>>>> Stashed changes
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);
         m_leftDrive.setInverted(true);
