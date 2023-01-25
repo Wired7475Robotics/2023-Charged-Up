@@ -31,8 +31,8 @@ public class Controll {
         mouseJoystick = new Joystick(2);
         JoyTest();
 
-        Trigger followCube = new JoystickButton(driveController, XboxController.Button.kB.value);
-        followCube.debounce(0.1).whileTrue(new VisionDrive());
+        //Trigger followCube = new JoystickButton(driveController, XboxController.Button.kB.value);
+        //followCube.debounce(0.1).whileTrue(new VisionDrive());
     }
 
     public void JoyTest(){

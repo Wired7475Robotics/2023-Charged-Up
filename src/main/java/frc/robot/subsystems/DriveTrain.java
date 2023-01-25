@@ -7,7 +7,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,10 +19,10 @@ import frc.robot.Controll;
 import frc.robot.Robot;
 
 public class DriveTrain extends SubsystemBase{
-    private static WPI_TalonSRX leftDrive1;
-    private static WPI_TalonSRX leftDrive2;
-    private static WPI_TalonSRX rightDrive1;
-    private static WPI_TalonSRX rightDrive2;
+    private static CANSparkMax leftDrive1;
+    private static CANSparkMax leftDrive2;
+    private static CANSparkMax rightDrive1;
+    private static CANSparkMax rightDrive2;
     private static double xSpeed;
     private static double zRotation;
     private static MotorControllerGroup m_leftDrive;
@@ -41,10 +42,10 @@ public class DriveTrain extends SubsystemBase{
     private Timer timer;
     public DriveTrain() {
         timer = new Timer();
-        leftDrive1 = new WPI_TalonSRX(15);
-        leftDrive2 = new WPI_TalonSRX(14);
-        rightDrive1 = new WPI_TalonSRX(13);
-        rightDrive2 = new WPI_TalonSRX(12);
+        leftDrive1 = new CANSparkMax(1, MotorType.kBrushless);
+        leftDrive2 = new CANSparkMax(9, MotorType.kBrushless);
+        rightDrive1 = new CANSparkMax(10, MotorType.kBrushless);
+        rightDrive2 = new CANSparkMax(19, MotorType.kBrushless);
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);
         m_leftDrive.setInverted(true);
@@ -58,23 +59,23 @@ public class DriveTrain extends SubsystemBase{
     public void teleDrive() {
         
         if (Controll.getDriveBumper(Controll.RIGHT)){
-            xSpeed = Controll.getDriveRightStick(Controll.Y);
-            zRotation = Controll.getDriveLeftStick(Controll.X);
+            xSpeed = Controll.getDriveLeftStick(Controll.Y);
+            zRotation = Controll.getDriveRightStick(Controll.X);
         } else if (Controll.getDriveBumper(Controll.LEFT)){
-            xSpeed = Controll.getDriveRightStick(Controll.Y) * MED_SPEED_COEFF;
-            zRotation = Controll.getDriveLeftStick(Controll.X) * MED_SPEED_COEFF;
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) * MED_SPEED_COEFF;
+            zRotation = Controll.getDriveRightStick(Controll.X) * MED_SPEED_COEFF;
         } else if (Controll.getDriveTrigger(Controll.RIGHT)){
-            xSpeed = Controll.getDriveRightStick(Controll.Y) *MED_SPEED_COEFF;
-            zRotation = Controll.getDriveLeftStick(Controll.X) * LOW_SPEED_COEFF;
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) *MED_SPEED_COEFF;
+            zRotation = Controll.getDriveRightStick(Controll.X) * LOW_SPEED_COEFF;
         }  else {
-            xSpeed = Controll.getDriveRightStick(Controll.Y) * HIGH_SPEED_COEFF;
-            zRotation = Controll.getDriveLeftStick(Controll.X) * HIGH_SPEED_COEFF;
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) * HIGH_SPEED_COEFF;
+            zRotation = Controll.getDriveRightStick(Controll.X) * HIGH_SPEED_COEFF;
         }
 
 
 
 
-        drivetrain.arcadeDrive(-xSpeed*0.5, -zRotation*0.5);
+        drivetrain.arcadeDrive(-xSpeed*1, -zRotation*-1);
         drivetrain.feed();
     }
 
