@@ -43,9 +43,9 @@ public class DriveTrain extends SubsystemBase{
     public DriveTrain() {
         timer = new Timer();
         leftDrive1 = new CANSparkMax(1, MotorType.kBrushless).setOpenLoopRampRate(0.5);
-        leftDrive2 = new CANSparkMax(9, MotorType.kBrushless)setOpenLoopRampRate(0.5);
-        rightDrive1 = new CANSparkMax(10, MotorType.kBrushless)setOpenLoopRampRate(0.5);
-        rightDrive2 = new CANSparkMax(19, MotorType.kBrushless)setOpenLoopRampRate(0.5);
+        leftDrive2 = new CANSparkMax(9, MotorType.kBrushless).setOpenLoopRampRate(0.5);
+        rightDrive1 = new CANSparkMax(10, MotorType.kBrushless).setOpenLoopRampRate(0.5);
+        rightDrive2 = new CANSparkMax(19, MotorType.kBrushless).setOpenLoopRampRate(0.5);
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);
         m_leftDrive.setInverted(true);
