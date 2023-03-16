@@ -42,12 +42,6 @@ public class DriveTrain extends SubsystemBase{
     private Timer timer;
     public DriveTrain() {
         timer = new Timer();
-<<<<<<< Updated upstream
-        leftDrive1 = new CANSparkMax(1, MotorType.kBrushless).setOpenLoopRampRate(0.5);
-        leftDrive2 = new CANSparkMax(9, MotorType.kBrushless).setOpenLoopRampRate(0.5);
-        rightDrive1 = new CANSparkMax(10, MotorType.kBrushless).setOpenLoopRampRate(0.5);
-        rightDrive2 = new CANSparkMax(19, MotorType.kBrushless).setOpenLoopRampRate(0.5);
-=======
         leftDrive1 = new CANSparkMax(1, MotorType.kBrushless);
         leftDrive2 = new CANSparkMax(9, MotorType.kBrushless);
         rightDrive1 = new CANSparkMax(10, MotorType.kBrushless);
@@ -56,7 +50,6 @@ public class DriveTrain extends SubsystemBase{
         leftDrive2.setOpenLoopRampRate(2);
         rightDrive1.setOpenLoopRampRate(2);
         rightDrive2.setOpenLoopRampRate(2);
->>>>>>> Stashed changes
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);
         m_leftDrive.setInverted(true);
@@ -86,11 +79,7 @@ public class DriveTrain extends SubsystemBase{
 
 
 
-<<<<<<< Updated upstream
-        drivetrain.arcadeDrive(xSpeed*-1, zRotation*1);
-=======
         drivetrain.arcadeDrive(-xSpeed*1, -zRotation*-0.75);
->>>>>>> Stashed changes
         drivetrain.feed();
     }
 
