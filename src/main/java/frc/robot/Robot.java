@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANDigitalInput;
+import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -37,9 +40,13 @@ public class Robot extends TimedRobot {
   private static final String kCubePipeline = "Cube";
   private static final String kConePipeline ="Cone";
   public static DriveTrain drivetrain;
+  public static Arm arm;
+  public static Lift lift;
+  public static Claw claw;
   public static Encoder leftEncoder;
   public static Encoder rightEncoder;
-  public static ShuffleboardTab autoTab;;
+  public static SparkMaxLimitSwitch ExtenderLimit;
+  public static ShuffleboardTab autoTab;
   public static Timer timer;
   public static AHRS navX;
   private String m_autoSelected;
@@ -62,17 +69,24 @@ public class Robot extends TimedRobot {
     v_chooser.addOption("Cone", kConePipeline);
     SmartDashboard.putData("Auto choices", m_chooser);
     SmartDashboard.putData("Vision Pipeline", v_chooser);
+
+    
     drivetrain = new DriveTrain();
     drivetrain.setDefaultCommand( new ArcadeDrive());
-
-    leftEncoder = new Encoder(2, 3, false , EncodingType.k4X);
+    arm = new Arm();
+    lift = new Lift();
+    lift.setDefaultCommand(new ArmController());
+    claw = new Claw();
+    claw.setDefaultCommand(new ClawControll());
+    ExtenderLimit = lift.Extender.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+    leftEncoder = new Encoder(3, 4, false , EncodingType.k4X);
     leftEncoder.setDistancePerPulse(18.8 / 2048.0);
     leftEncoder.setMaxPeriod(0.1);
     leftEncoder.setMinRate(5);
     leftEncoder.setSamplesToAverage(4);
     leftEncoder.setReverseDirection(false);
    
-    rightEncoder = new Encoder(0, 1,true, EncodingType.k4X);
+    rightEncoder = new Encoder(1, 2,true, EncodingType.k4X);
     rightEncoder.setDistancePerPulse(18.8 / 2048.0);
     rightEncoder.setMaxPeriod(0.1);
     rightEncoder.setMinRate(5);

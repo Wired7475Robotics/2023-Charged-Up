@@ -3,8 +3,14 @@ package frc.robot;
 //import frc.robot.commands.wiredAPI.Motor;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.HighCountLift;
+import frc.robot.commands.LiftEncoderReset;
+import frc.robot.commands.LiftOff;
+import frc.robot.commands.LowCountLift;
+import frc.robot.commands.MedCountLift;
 import frc.robot.commands.VisionDrive;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.MotorSafety;
@@ -29,15 +35,23 @@ public class Controll {
         driveController = new XboxController(0);
         opController = new XboxController(1);
         mouseJoystick = new Joystick(2);
-        JoyTest();
 
-        //Trigger followCube = new JoystickButton(driveController, XboxController.Button.kB.value);
-        //followCube.debounce(0.1).whileTrue(new VisionDrive());
-    }
+       Trigger followCube = new JoystickButton(driveController, XboxController.Button.kB.value);
+       followCube.debounce(0.1).whileTrue(new VisionDrive());
 
-    public void JoyTest(){
-        
+       Trigger liftTop = new JoystickButton(opController, XboxController.Button.kY.value);
+       liftTop.debounce(0.1).whileTrue(new HighCountLift()).whileFalse(new LiftOff());
+
+       Trigger liftMed = new JoystickButton(opController, XboxController.Button.kB.value);
+       liftMed.debounce(0.1).whileTrue(new MedCountLift()).whileFalse(new LiftOff());
+
+       Trigger liftLow = new JoystickButton(opController, XboxController.Button.kA.value);
+       liftLow.debounce(0.1).whileTrue(new LowCountLift()).whileFalse(new LiftOff());
+
+       Trigger liftEncReset = new JoystickButton(opController, XboxController.Button.kX.value);
+       liftEncReset.debounce(0.1).whileTrue(new LiftEncoderReset());
     }
+    
 
     public static boolean getDriveBumper(int side) {
         if(side == RIGHT)
