@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
 
 
     autonomusCommands = new SequentialCommandGroup(
-      new AutoDrive(6)
+      new AutoDrive(1)
 
     );
     //visionCommands =  new SequentialCommandGroup(new );

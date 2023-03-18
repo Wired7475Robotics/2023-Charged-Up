@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
@@ -29,6 +31,13 @@ public class AutoDrive  extends CommandBase{
 
     }
 
+    private void setAllIdleMode(IdleMode mode) {
+        Robot.drivetrain.leftDrive1.setIdleMode(mode);
+        Robot.drivetrain.leftDrive2.setIdleMode(mode);
+        Robot.drivetrain.rightDrive1.setIdleMode(mode);
+        Robot.drivetrain.rightDrive2.setIdleMode(mode);
+    }
+
     @Override
     public void execute() {
         if(!targetInit) {
@@ -39,12 +48,14 @@ public class AutoDrive  extends CommandBase{
             Robot.drivetrain.timer.stop();
             Robot.drivetrain.timer.reset();
             Robot.drivetrain.timer.start();
+            setAllIdleMode(IdleMode.kBrake);
             targetInit = true;
         }
-
+        
         isDone = Robot.drivetrain.autoDrive(target, pid);
         if (isDone){
             Robot.drivetrain.drivetrain.arcadeDrive(0,0); 
+            setAllIdleMode(IdleMode.kCoast);
         }
     }
 

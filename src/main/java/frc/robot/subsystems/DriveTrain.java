@@ -21,9 +21,9 @@ import frc.robot.Robot;
 public class DriveTrain extends SubsystemBase{
     private static final double DRIVECONV = 14;
     public CANSparkMax leftDrive1;
-    private static CANSparkMax leftDrive2;
-    private static CANSparkMax rightDrive1;
-    private static CANSparkMax rightDrive2;
+    public static CANSparkMax leftDrive2;
+    public static CANSparkMax rightDrive1;
+    public static CANSparkMax rightDrive2;
     private static double xSpeed;
     private static double zRotation;
     private static MotorControllerGroup m_leftDrive;
@@ -141,7 +141,7 @@ public class DriveTrain extends SubsystemBase{
      * @return
      */
     public boolean autoDrive(double target, PIDController drivePid) {
-        if (timer.get() > 5){
+        if (timer.get() > 1){
             return true;
         }
         //The linear speed, derived from the pid loop output
@@ -156,8 +156,8 @@ public class DriveTrain extends SubsystemBase{
         linear_speed = linear_speed > MAX_LIN_SPEED ? MAX_LIN_SPEED : linear_speed ;
 
         //Drive the motor
-        m_leftDrive.set(-(linear_speed * (1*angular_error)));
-        m_rightDrive.set(-(linear_speed * angular_error));
+        m_leftDrive.set(-(linear_speed * (1*angular_error)/10));
+        m_rightDrive.set(-(linear_speed * angular_error)/10);
         System.out.println(drivePid.atSetpoint());
         return drivePid.atSetpoint();
 
