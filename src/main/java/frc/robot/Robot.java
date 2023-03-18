@@ -25,6 +25,8 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANDigitalInput;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
@@ -43,8 +45,8 @@ public class Robot extends TimedRobot {
   public static Arm arm;
   public static Lift lift;
   public static Claw claw;
-  public static Encoder leftEncoder;
-  public static Encoder rightEncoder;
+  public static RelativeEncoder leftEncoder;
+  public static RelativeEncoder rightEncoder;
   public static SparkMaxLimitSwitch ExtenderLimit;
   public static ShuffleboardTab autoTab;
   public static Timer timer;
@@ -79,19 +81,10 @@ public class Robot extends TimedRobot {
     claw = new Claw();
     claw.setDefaultCommand(new ClawControll());
     ExtenderLimit = lift.Extender.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-    leftEncoder = new Encoder(3, 4, false , EncodingType.k4X);
-    leftEncoder.setDistancePerPulse(18.8 / 2048.0);
-    leftEncoder.setMaxPeriod(0.1);
-    leftEncoder.setMinRate(5);
-    leftEncoder.setSamplesToAverage(4);
-    leftEncoder.setReverseDirection(false);
+    leftEncoder = drivetrain.leftDrive1.getEncoder();
+
    
-    rightEncoder = new Encoder(1, 2,true, EncodingType.k4X);
-    rightEncoder.setDistancePerPulse(18.8 / 2048.0);
-    rightEncoder.setMaxPeriod(0.1);
-    rightEncoder.setMinRate(5);
-    rightEncoder.setSamplesToAverage(4);
-    rightEncoder.setReverseDirection(true);
+    rightEncoder = drivetrain.leftDrive1.getEncoder();
 
     timer = new Timer();
     timer.start();
@@ -103,12 +96,8 @@ public class Robot extends TimedRobot {
 
 
     autonomusCommands = new SequentialCommandGroup(
-    new AutoDrive(24),
-    new AutoTurn(45),
-    new AutoDrive(24),
-    new AutoTurn(-45),
-    new AutoDrive(25),
-    new AutoTurn(180)
+      new AutoDrive(6)
+
     );
     //visionCommands =  new SequentialCommandGroup(new );
 
@@ -125,8 +114,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Left Encoder", leftEncoder.getDistance());
-    SmartDashboard.putNumber("Right Encoder", rightEncoder.getDistance());
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition());
     SmartDashboard.putNumber("Raw Angle", navX.getAngle());
     SmartDashboard.putNumber("Absolute Angle", absAngle());
   }
@@ -148,8 +137,8 @@ public class Robot extends TimedRobot {
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
     CommandScheduler.getInstance().schedule(autonomusCommands);
-    leftEncoder.reset();
-    rightEncoder.reset();
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
   }
 
   /** This function is called periodically during autonomous. */

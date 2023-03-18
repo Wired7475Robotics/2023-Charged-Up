@@ -19,7 +19,8 @@ import frc.robot.Controll;
 import frc.robot.Robot;
 
 public class DriveTrain extends SubsystemBase{
-    private static CANSparkMax leftDrive1;
+    private static final double DRIVECONV = 14;
+    public CANSparkMax leftDrive1;
     private static CANSparkMax leftDrive2;
     private static CANSparkMax rightDrive1;
     private static CANSparkMax rightDrive2;
@@ -27,10 +28,10 @@ public class DriveTrain extends SubsystemBase{
     private static double zRotation;
     private static MotorControllerGroup m_leftDrive;
     private static MotorControllerGroup m_rightDrive;
-    private static DifferentialDrive drivetrain;
+    public static DifferentialDrive drivetrain;
     private static double MED_SPEED_COEFF = 0.6;
     private static double LOW_SPEED_COEFF = 0.4;
-    private static double HIGH_SPEED_COEFF = 0.7;
+    private static double HIGH_SPEED_COEFF = 0.8;
     private static double TIMEOUT = 15;
     private static PhotonCamera camera;
     private static PhotonCamera camera2;
@@ -39,17 +40,17 @@ public class DriveTrain extends SubsystemBase{
     public final int CONE = 1;
     private final double MAX_LIN_SPEED = 0.25;
     private final double MAX_ROT_SPEEED = 0.25;
-    private Timer timer;
+    public Timer timer;
     public DriveTrain() {
         timer = new Timer();
         leftDrive1 = new CANSparkMax(1, MotorType.kBrushless);
         leftDrive2 = new CANSparkMax(9, MotorType.kBrushless);
         rightDrive1 = new CANSparkMax(10, MotorType.kBrushless);
         rightDrive2 = new CANSparkMax(19, MotorType.kBrushless);
-        leftDrive1.setOpenLoopRampRate(2);
-        leftDrive2.setOpenLoopRampRate(2);
-        rightDrive1.setOpenLoopRampRate(2);
-        rightDrive2.setOpenLoopRampRate(2);
+        leftDrive1.setOpenLoopRampRate(1);
+        leftDrive2.setOpenLoopRampRate(1);
+        rightDrive1.setOpenLoopRampRate(1);
+        rightDrive2.setOpenLoopRampRate(1);
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);
         m_leftDrive.setInverted(true);
@@ -69,7 +70,7 @@ public class DriveTrain extends SubsystemBase{
             xSpeed = Controll.getDriveLeftStick(Controll.Y) * MED_SPEED_COEFF;
             zRotation = Controll.getDriveRightStick(Controll.X) * MED_SPEED_COEFF;
         } else if (Controll.getDriveTrigger(Controll.RIGHT)){
-            xSpeed = Controll.getDriveLeftStick(Controll.Y) *MED_SPEED_COEFF;
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) *LOW_SPEED_COEFF;
             zRotation = Controll.getDriveRightStick(Controll.X) * LOW_SPEED_COEFF;
         }  else {
             xSpeed = Controll.getDriveLeftStick(Controll.Y) * HIGH_SPEED_COEFF;
@@ -79,7 +80,7 @@ public class DriveTrain extends SubsystemBase{
 
 
 
-        drivetrain.arcadeDrive(-xSpeed*1, -zRotation*-0.75);
+        drivetrain.arcadeDrive(-xSpeed*1, -zRotation*-1);
         drivetrain.feed();
     }
 
@@ -140,22 +141,26 @@ public class DriveTrain extends SubsystemBase{
      * @return
      */
     public boolean autoDrive(double target, PIDController drivePid) {
-        
+        if (timer.get() > 5){
+            return true;
+        }
         //The linear speed, derived from the pid loop output
-        double linear_speed = drivePid.calculate(Robot.leftEncoder.getDistance(), target);
+        double linear_speed = drivePid.calculate(Robot.leftEncoder.getPosition() , target*DRIVECONV);
         double angular_error;
         //An error factor to ensure the robot drives straigmht
-        if(Math.abs(Robot.rightEncoder.getDistance()) < 0.5 && Math.abs(Robot.leftEncoder.getDistance()) < 0.5)
+        if(Math.abs(Robot.rightEncoder.getPosition() * DRIVECONV) < 0.5 && Math.abs(Robot.leftEncoder.getPosition() * DRIVECONV) < 0.5)
            angular_error = 1;
         else
-           angular_error = Robot.leftEncoder.getDistance() / Robot.rightEncoder.getDistance();
+           angular_error = Robot.leftEncoder.getPosition() / Robot.rightEncoder.getPosition() ;
 
         linear_speed = linear_speed > MAX_LIN_SPEED ? MAX_LIN_SPEED : linear_speed ;
 
-        //Drive the motors
-        m_leftDrive.set(linear_speed * (1/angular_error));
-        m_rightDrive.set(linear_speed * angular_error);
+        //Drive the motor
+        m_leftDrive.set(-(linear_speed * (1*angular_error)));
+        m_rightDrive.set(-(linear_speed * angular_error));
+        System.out.println(drivePid.atSetpoint());
         return drivePid.atSetpoint();
+
     }
 
     public boolean autoTurn(double target, PIDController anglepid) {        

@@ -21,34 +21,45 @@ public class AutoDrive  extends CommandBase{
 
     public AutoDrive(double target_) {
         addRequirements(Robot.drivetrain);
-        target = target_;
+        target = -target_;
     }
 
     @Override
     public void initialize() {
-        pid.setSetpoint(target);
-        pid.setTolerance(0.5);
+
     }
 
     @Override
     public void execute() {
         if(!targetInit) {
-            Robot.leftEncoder.reset();
-            Robot.rightEncoder.reset();
+            pid.setSetpoint(target);
+            pid.setTolerance(10);
+            Robot.leftEncoder.setPosition(0);
+            Robot.rightEncoder.setPosition(0);
+            Robot.drivetrain.timer.stop();
+            Robot.drivetrain.timer.reset();
+            Robot.drivetrain.timer.start();
             targetInit = true;
         }
 
         isDone = Robot.drivetrain.autoDrive(target, pid);
+        if (isDone){
+            Robot.drivetrain.drivetrain.arcadeDrive(0,0); 
+        }
     }
 
    @Override
    public void end(boolean interrupted) {
-       Robot.leftEncoder.reset();
-       Robot.rightEncoder.reset();
+       
+       Robot.leftEncoder.setPosition(0);
+       Robot.rightEncoder.setPosition(0);
+       
    }
 
     @Override
     public boolean isFinished() {
-        return isDone;   
+
+        return isDone;
+          
     }    
 }
