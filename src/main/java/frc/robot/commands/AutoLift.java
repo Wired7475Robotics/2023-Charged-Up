@@ -5,31 +5,30 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Controll;
 import frc.robot.Robot;
 
-public class HighCountLift extends CommandBase{
+public class AutoLift extends CommandBase{
     public static final int LOW = 0;
     public static final int MED = 1;
     public static final int HIGH = 2;
 
-    private int mode = 0;
 
-    private double lowCount = 0;
-    private double medCount = 20;
-    private double highCount = 49;
 
-    private double lowArmCount = 0;
-    private double medArmCount = 24;
-    private double highArmCount = 20;
+    private boolean targetInit = false;
 
     private final double liftConvFactor = -(1/3.4) * Math.PI * 1.5;
 
-    
 
 
     PIDController liftPid = new PIDController(1, 0, 0);
     PIDController armPid = new PIDController(0.5, 0, 0);
+    double target;
 
-    public HighCountLift(){
+    public AutoLift(){
         addRequirements(Robot.arm);
+    }
+    public AutoLift(double target_){
+        addRequirements(Robot.arm);
+        
+        target = target_ * liftConvFactor;
     }
 
 
@@ -37,43 +36,17 @@ public class HighCountLift extends CommandBase{
     @Override 
     public void initialize(){
 
-
-        //liftPid.setSetpoint(2);
-        liftPid.setSetpoint(highCount / liftConvFactor);
     }
     @Override
     public void execute(){
-        /*
-        if (Controll.getOpA()){
-            mode = LOW;
-        } else if ( Controll.getOpB()){
-            mode = MED;
-        } else if (Controll.getOpY()){
-            mode = HIGH;
-        } else {
-            mode = 3;
+
+        if(!targetInit) {
+            Robot.arm.Elevator1.getEncoder().setPosition(0);
+            Robot.arm.Elevator2.getEncoder().setPosition(0);
+            liftPid.setSetpoint(target);
+            targetInit = true;
         }
 
-        switch(mode){
-            case LOW: {
-                liftPid.setSetpoint(lowCount / liftConvFactor);
-                armPid.setSetpoint(lowArmCount / armConvFactor);
-            };
-            case MED: {
-                liftPid.setSetpoint(medCount / liftConvFactor);
-                armPid.setSetpoint(medArmCount / armConvFactor);
-            };
-            case HIGH: {
-                liftPid.setSetpoint(highCount / liftConvFactor);
-                armPid.setSetpoint(highArmCount / armConvFactor);
-            };
-            default: {
-                liftPid.setSetpoint(Robot.arm.Elevator1.getEncoder().getPosition());
-            };
-
-        }
-        */
-        
         liftPid.setTolerance(3);
         armPid.setTolerance(3);
 
@@ -99,6 +72,6 @@ public class HighCountLift extends CommandBase{
     }
     @Override
     public boolean isFinished(){
-        return false;
+        return liftPid.atSetpoint();
     }
 }

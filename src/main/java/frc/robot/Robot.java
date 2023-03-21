@@ -55,7 +55,8 @@ public class Robot extends TimedRobot {
   public static Controll oi;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public final SendableChooser<String> v_chooser = new SendableChooser<>();
-  private SequentialCommandGroup autonomusCommands;
+  private SequentialCommandGroup autonomus1Commands;
+  private SequentialCommandGroup autonomus2Commands;
   private SequentialCommandGroup visionCommands;
 
 
@@ -95,9 +96,17 @@ public class Robot extends TimedRobot {
 
 
 
-    autonomusCommands = new SequentialCommandGroup(
-      new AutoDrive(1)
-
+    autonomus1Commands = new SequentialCommandGroup(
+      new AutoLift(38),
+      new AutoArm(10),
+      new AutoArm(5),
+      new AutoDrive(-5)
+    );
+    autonomus2Commands = new SequentialCommandGroup(
+      new AutoLift(38),
+      new AutoArm(10),
+      new AutoArm(5),
+      new AutoDrive(-2)
     );
     //visionCommands =  new SequentialCommandGroup(new );
 
@@ -136,7 +145,17 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    CommandScheduler.getInstance().schedule(autonomusCommands);
+    switch (m_autoSelected) {
+      case kCustomAuto:
+        // Put custom auto code here
+        CommandScheduler.getInstance().schedule(autonomus1Commands);
+      case kDefaultAuto:
+        CommandScheduler.getInstance().schedule(autonomus2Commands);
+      default:
+        // Put default auto code here
+
+    }
+
     leftEncoder.setPosition(0);
     rightEncoder.setPosition(0);
   }
@@ -144,15 +163,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+
     CommandScheduler.getInstance().run();
   }
 
@@ -169,7 +180,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
 
-    CommandScheduler.getInstance().cancel(autonomusCommands);
+    CommandScheduler.getInstance().cancelAll();
   }
   /** This function is called periodically when disabled. */
   @Override

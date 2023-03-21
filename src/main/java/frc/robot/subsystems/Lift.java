@@ -18,7 +18,7 @@ public class Lift extends SubsystemBase{
     public Lift(){
         Extender = new CANSparkMax(6, MotorType.kBrushless);
         Extender.setIdleMode(IdleMode.kBrake);
-        Extender.setOpenLoopRampRate(2);
+        Extender.setOpenLoopRampRate(1.5);
        
     }
     

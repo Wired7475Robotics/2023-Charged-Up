@@ -21,9 +21,9 @@ import frc.robot.Robot;
 public class DriveTrain extends SubsystemBase{
     private static final double DRIVECONV = 14;
     public CANSparkMax leftDrive1;
-    public static CANSparkMax leftDrive2;
-    public static CANSparkMax rightDrive1;
-    public static CANSparkMax rightDrive2;
+    public CANSparkMax leftDrive2;
+    public CANSparkMax rightDrive1;
+    public CANSparkMax rightDrive2;
     private static double xSpeed;
     private static double zRotation;
     private static MotorControllerGroup m_leftDrive;
@@ -47,10 +47,10 @@ public class DriveTrain extends SubsystemBase{
         leftDrive2 = new CANSparkMax(9, MotorType.kBrushless);
         rightDrive1 = new CANSparkMax(10, MotorType.kBrushless);
         rightDrive2 = new CANSparkMax(19, MotorType.kBrushless);
-        leftDrive1.setOpenLoopRampRate(1);
-        leftDrive2.setOpenLoopRampRate(1);
-        rightDrive1.setOpenLoopRampRate(1);
-        rightDrive2.setOpenLoopRampRate(1);
+        leftDrive1.setOpenLoopRampRate(0.75);
+        leftDrive2.setOpenLoopRampRate(0.75);
+        rightDrive1.setOpenLoopRampRate(0.75);
+        rightDrive2.setOpenLoopRampRate(0.75);
         m_leftDrive = new MotorControllerGroup(leftDrive1, leftDrive2);
         m_rightDrive = new MotorControllerGroup(rightDrive1, rightDrive2);
         m_leftDrive.setInverted(true);
