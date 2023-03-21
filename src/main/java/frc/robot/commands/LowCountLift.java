@@ -81,16 +81,16 @@ public class LowCountLift extends CommandBase{
         double input = (-Robot.arm.Elevator1.getEncoder().getPosition() + Robot.arm.Elevator2.getEncoder().getPosition()) / 2;
         System.out.println("Input :" + input + " output :" + liftPid.calculate(input)/10 + " setpoint: " + liftPid.getSetpoint() + " limitSwitch: " + Robot.arm.topLimitSwitch.get());
         if (liftPid.calculate(input)/10 > 0.10 && Robot.arm.topLimitSwitch.get()){
-            System.out.println("down");
+
             Robot.arm.Elevator1.set(-0.10);
             Robot.arm.Elevator2.set(0.10);
         } else if ((liftPid.calculate(input)/10 < 0.20) && liftPid.calculate(input)/10 > -0.20 && Robot.arm.topLimitSwitch.get() ){
             Robot.arm.Elevator1.set(-liftPid.calculate(input)/10);
-            System.out.println("raw");
+
             Robot.arm.Elevator2.set(liftPid.calculate(input)/10);
         } else if (liftPid.calculate(input)/10 < -0.20 && Robot.arm.topLimitSwitch.get()){
             Robot.arm.Elevator1.set(0.20);
-            System.out.println("up");
+
             Robot.arm.Elevator2.set(-0.20);
         } else {
             Robot.arm.Elevator1.set(0);

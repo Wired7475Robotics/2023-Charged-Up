@@ -4,25 +4,29 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class AutoArm extends CommandBase {
+public class AutoClaw extends CommandBase {
     double target;
     double kP = 0;
     double kI = 0;
     double kD = 0;
     boolean targetInit = false;
 
-    private final double armConvFactor = -(1/4) * Math.PI * 2;
 
     PIDController armPID = new PIDController(kP,kI,kD);
 
-   public AutoArm(double target_){
+   public AutoClaw(){
+        addRequirements(Robot.claw);
+
+   } 
+
+   public AutoClaw(double target_){
         addRequirements(Robot.lift);
-        target = target_ / armConvFactor;
+        target = target_;
    }
 
    @Override
    public void initialize() {
-        armPID.setTolerance(5);
+        armPID.setTolerance(1);
 
    }
 
@@ -32,8 +36,8 @@ public class AutoArm extends CommandBase {
             armPID.setSetpoint(target);
             targetInit = true;
        }
-       System.out.println(Robot.lift.Extender.getEncoder().getPosition() + "," + target);
-       Robot.lift.Extender.set(armPID.calculate(Robot.lift.Extender.getEncoder().getPosition()) <= 0.5? 0.5 : armPID.calculate(Robot.lift.Extender.getEncoder().getPosition()) >= -0.5? -0.5 : armPID.calculate(Robot.lift.Extender.getEncoder().getPosition()));
+
+       Robot.claw.claw.set(armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) <= 0.5? 0.5 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) >= -0.5? -0.5 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()));
        
     }
 
@@ -44,7 +48,7 @@ public class AutoArm extends CommandBase {
 
    @Override
    public void end(boolean interrupted) {
-     Robot.lift.Extender.set(0);
+     Robot.claw.claw.set(0);
    }
     
 }

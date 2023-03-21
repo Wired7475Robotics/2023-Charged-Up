@@ -37,8 +37,8 @@ import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String kDefaultAuto = "Auto3";
+  private static final String kCustomAuto = "Auto1";
   private static final String kCubePipeline = "Cube";
   private static final String kConePipeline ="Cone";
   public static DriveTrain drivetrain;
@@ -66,8 +66,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption("Auto3", kDefaultAuto);
+    m_chooser.addOption("Auto1", kCustomAuto);
     v_chooser.setDefaultOption("Cube", kCubePipeline);
     v_chooser.addOption("Cone", kConePipeline);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -97,13 +97,13 @@ public class Robot extends TimedRobot {
 
 
     autonomus1Commands = new SequentialCommandGroup(
-      new AutoLift(38),
-      new AutoArm(10),
-      new AutoArm(5),
+      new AutoLift(5),
+      new AutoArm(2),
+      new AutoArm(-1),
       new AutoDrive(-5)
     );
     autonomus2Commands = new SequentialCommandGroup(
-      new AutoLift(38),
+      new AutoLift(19),
       new AutoArm(10),
       new AutoArm(5),
       new AutoDrive(-2)
@@ -148,9 +148,9 @@ public class Robot extends TimedRobot {
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
-        CommandScheduler.getInstance().schedule(autonomus1Commands);
-      case kDefaultAuto:
         CommandScheduler.getInstance().schedule(autonomus2Commands);
+      case kDefaultAuto:
+        CommandScheduler.getInstance().schedule(autonomus1Commands);
       default:
         // Put default auto code here
 
@@ -180,6 +180,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
 
+    System.out.println("disabled");
     CommandScheduler.getInstance().cancelAll();
   }
   /** This function is called periodically when disabled. */
