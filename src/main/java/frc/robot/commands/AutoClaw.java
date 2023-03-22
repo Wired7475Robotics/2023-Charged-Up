@@ -42,6 +42,8 @@ public class AutoClaw extends CommandBase {
        double pidCalcPos = armPID.calculate(position);
        double clampedPidCalcPos = Math.max(-1, Math.min(1, pidCalcPos));
 
+       System.out.println(position + "," + armPID.getSetpoint() + ","+ clampedPidCalcPos + "," +  pidCalcPos);
+
        Robot.claw.claw.set(clampedPidCalcPos);
 
     }
