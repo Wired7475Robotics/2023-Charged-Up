@@ -17,7 +17,7 @@ public class AutoClaw extends CommandBase {
    public AutoClaw(){
         addRequirements(Robot.claw);
 
-   } 
+   }
 
    public AutoClaw(double target_){
         addRequirements(Robot.lift);
@@ -38,8 +38,12 @@ public class AutoClaw extends CommandBase {
             targetInit = true;
        }
 
-       Robot.claw.claw.set(armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) <= 1? 1 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) >= -1? -1 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()));
-       
+       double position = position;
+       double pidCalcPos = armPID.calculate(position);
+       double clampedPidCalcPos = Math.max(-1, Math.min(1, pidCalcPos));
+
+       Robot.claw.claw.set(clampedPidCalcPos);
+
     }
 
    @Override
@@ -51,5 +55,5 @@ public class AutoClaw extends CommandBase {
    public void end(boolean interrupted) {
      Robot.claw.claw.set(0);
    }
-    
+
 }
