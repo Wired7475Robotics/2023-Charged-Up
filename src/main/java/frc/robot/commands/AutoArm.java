@@ -37,9 +37,9 @@ public class AutoArm extends CommandBase {
             Robot.lift.Extender.getEncoder().setPosition(0);
        }
 
-       position = Robot.lift.Extender.getEncoder().getPosition()
-       pidPosCmd = armPID.calculate(position);
-       clampedPidPosCmd = Math.max(-0.5, Math.min(0.5, pidPosCmd));
+       double position = Robot.lift.Extender.getEncoder().getPosition();
+       double pidPosCmd = armPID.calculate(position);
+       double clampedPidPosCmd = Math.max(-0.5, Math.min(0.5, pidPosCmd));
        Robot.lift.Extender.set(clampedPidPosCmd);
 
        System.out.println(position + "," + target);
