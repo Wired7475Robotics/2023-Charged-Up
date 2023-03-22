@@ -29,6 +29,7 @@ public class AutoArm extends CommandBase {
         armPID.setTolerance(0.5);
    }
 
+
    @Override
    public void execute() {
        if(targetInit == false){
@@ -42,7 +43,7 @@ public class AutoArm extends CommandBase {
        double clampedPidPosCmd = Math.max(-0.5, Math.min(0.5, pidPosCmd));
        Robot.lift.Extender.set(clampedPidPosCmd);
 
-       System.out.println(position + "," + target);
+       System.out.println(position + "," + target + ","+ clampedPidPosCmd);
 
     }
 
