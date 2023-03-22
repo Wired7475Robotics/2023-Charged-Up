@@ -97,9 +97,9 @@ public class Robot extends TimedRobot {
 
 
     autonomus1Commands = new SequentialCommandGroup(
-      new AutoLift(5),
-      new AutoArm(2),
-      new AutoArm(-1),
+      new AutoLift(15),
+      new AutoArm(30),
+      new AutoArm(-10),
       new AutoDrive(-5)
     );
     autonomus2Commands = new SequentialCommandGroup(
