@@ -11,7 +11,7 @@ public class AutoArm extends CommandBase {
     double kD = 0;
     boolean targetInit = false;
 
-    private final double armConvFactor = -(1/4) * Math.PI * 2;
+    private final double armConvFactor = -(1.0/4.0) * Math.PI * 2;
 
     PIDController armPID = new PIDController(kP,kI,kD);
     public AutoArm(){
