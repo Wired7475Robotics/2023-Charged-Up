@@ -38,13 +38,13 @@ public class AutoClaw extends CommandBase {
             targetInit = true;
        }
 
-       double position = position;
+       double position = Robot.claw.claw.getEncoder().getPosition();
        double pidCalcPos = armPID.calculate(position);
        double clampedPidCalcPos = Math.max(-1, Math.min(1, pidCalcPos));
 
        System.out.println(position + "," + armPID.getSetpoint() + ","+ clampedPidCalcPos + "," +  pidCalcPos);
 
-       Robot.claw.claw.set(clampedPidCalcPos);
+       Robot.claw.claw.set(0.75);
 
     }
 
