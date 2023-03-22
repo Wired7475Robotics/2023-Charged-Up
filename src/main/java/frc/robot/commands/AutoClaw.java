@@ -6,7 +6,7 @@ import frc.robot.Robot;
 
 public class AutoClaw extends CommandBase {
     double target;
-    double kP = 0;
+    double kP = 0.5;
     double kI = 0;
     double kD = 0;
     boolean targetInit = false;
@@ -33,11 +33,12 @@ public class AutoClaw extends CommandBase {
    @Override
    public void execute() {
        if(targetInit == false){
+            Robot.claw.claw.getEncoder().setPosition(0);
             armPID.setSetpoint(target);
             targetInit = true;
        }
 
-       Robot.claw.claw.set(armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) <= 0.5? 0.5 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) >= -0.5? -0.5 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()));
+       Robot.claw.claw.set(armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) <= 1? 1 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()) >= -1? -1 : armPID.calculate(Robot.claw.claw.getEncoder().getPosition()));
        
     }
 

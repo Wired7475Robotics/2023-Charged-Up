@@ -6,7 +6,7 @@ import frc.robot.Robot;
 
 public class AutoArm extends CommandBase {
     double target = 0;
-    double kP = 0;
+    double kP = 0.5;
     double kI = 0;
     double kD = 0;
     boolean targetInit = false;
@@ -47,7 +47,7 @@ public class AutoArm extends CommandBase {
        clampedPidPosCmd = Math.max(-0.5, Math.min(0.5, pidPosCmd));
        Robot.lift.Extender.set(clampedPidPosCmd);
 
-       System.out.println(position + "," + target + ","+ clampedPidPosCmd + "," +  pidPosCmd);
+       System.out.println(position + "," + armPID.getSetpoint() + ","+ clampedPidPosCmd + "," +  pidPosCmd);
 
     }
 
