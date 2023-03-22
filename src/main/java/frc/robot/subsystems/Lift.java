@@ -23,7 +23,7 @@ public class Lift extends SubsystemBase{
     }
     
     public void TeleArm(){
-       // System.out.println("arm code reached");
+       System.out.println("arm code reached");
         if(Controll.getOpBumper(Controll.LEFT)){
             Extender.set(0.50);
         } else if(Controll.getOpBumper(Controll.RIGHT)){
