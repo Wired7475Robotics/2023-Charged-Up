@@ -38,8 +38,8 @@ public class DriveTrain extends SubsystemBase{
     public final double[] AREA = {0,0};
     public final int CUBE = 0;
     public final int CONE = 1;
-    private final double MAX_LIN_SPEED = 0.6;
-    private final double MAX_ROT_SPEEED = 0.6;
+    private final double MAX_LIN_SPEED = 0.4;
+    private final double MAX_ROT_SPEEED = 0.4;
     public Timer timer;
     public DriveTrain() {
         timer = new Timer();
@@ -71,7 +71,7 @@ public class DriveTrain extends SubsystemBase{
             zRotation = Controll.getDriveRightStick(Controll.X) * MED_SPEED_COEFF;
         } else if (Controll.getDriveTrigger(Controll.RIGHT)){
             xSpeed = Controll.getDriveLeftStick(Controll.Y) *LOW_SPEED_COEFF;
-            zRotation = Controll.getDriveRightStick(Controll.X) * LOW_SPEED_COEFF;
+            zRotation = Controll.getDriveRightStick(Controll.X) * MED_SPEED_COEFF;
         }  else {
             xSpeed = Controll.getDriveLeftStick(Controll.Y) * HIGH_SPEED_COEFF;
             zRotation = Controll.getDriveRightStick(Controll.X) * HIGH_SPEED_COEFF;
