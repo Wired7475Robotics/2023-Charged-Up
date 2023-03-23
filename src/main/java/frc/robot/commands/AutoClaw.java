@@ -14,13 +14,9 @@ public class AutoClaw extends CommandBase {
 
     PIDController armPID = new PIDController(kP,kI,kD);
 
-   public AutoClaw(){
-        addRequirements(Robot.claw);
-
-   }
 
    public AutoClaw(double target_){
-        addRequirements(Robot.lift);
+        addRequirements(Robot.claw);
         target = target_;
    }
 
