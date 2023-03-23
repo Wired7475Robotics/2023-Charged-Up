@@ -99,15 +99,18 @@ public class Robot extends TimedRobot {
     autonomus1Commands = new SequentialCommandGroup(
       new AutoLift(20),
       new AutoArm(30),
+      new AutoClaw(0.5),
       new AutoArm(-10),
-      new AutoClaw(15),
-      new AutoDrive(-20)
+      new AutoClaw(0),
+      new AutoDrive(-200)
     );
     autonomus2Commands = new SequentialCommandGroup(
-      new AutoLift(19),
-      new AutoArm(10),
-      new AutoArm(-5),
-      new AutoDrive(-2)
+      new AutoLift(20),
+      new AutoArm(30),
+      new AutoClaw(0.5),
+      new AutoArm(-10),
+      new AutoClaw(0),
+      new AutoDrive(-500)
     );
     //visionCommands =  new SequentialCommandGroup(new );
 

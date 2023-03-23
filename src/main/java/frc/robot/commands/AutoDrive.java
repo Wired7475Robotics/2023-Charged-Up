@@ -53,6 +53,7 @@ public class AutoDrive  extends CommandBase{
         }
         
         isDone = Robot.drivetrain.autoDrive(target, pid);
+        System.out.println("AutoDrive isDone? " + isDone);
         if (isDone){
             Robot.drivetrain.drivetrain.arcadeDrive(0,0); 
             setAllIdleMode(IdleMode.kCoast);

@@ -38,8 +38,8 @@ public class DriveTrain extends SubsystemBase{
     public final double[] AREA = {0,0};
     public final int CUBE = 0;
     public final int CONE = 1;
-    private final double MAX_LIN_SPEED = 0.25;
-    private final double MAX_ROT_SPEEED = 0.25;
+    private final double MAX_LIN_SPEED = 0.6;
+    private final double MAX_ROT_SPEEED = 0.6;
     public Timer timer;
     public DriveTrain() {
         timer = new Timer();
@@ -141,7 +141,8 @@ public class DriveTrain extends SubsystemBase{
      * @return
      */
     public boolean autoDrive(double target, PIDController drivePid) {
-        if (timer.get() > 1){
+        if (timer.get() > 5){
+            System.out.println("Timer out of time");
             return true;
         }
         //The linear speed, derived from the pid loop output
@@ -153,12 +154,15 @@ public class DriveTrain extends SubsystemBase{
         else
            angular_error = Robot.leftEncoder.getPosition() / Robot.rightEncoder.getPosition() ;
 
+
         linear_speed = linear_speed > MAX_LIN_SPEED ? MAX_LIN_SPEED : linear_speed ;
+
+        System.out.println(linear_speed + "," + target );
 
         //Drive the motor
         m_leftDrive.set(-(linear_speed * (1*angular_error)/10));
         m_rightDrive.set(-(linear_speed * angular_error)/10);
-        System.out.println(drivePid.atSetpoint());
+        System.out.println("atSetpoint? " + drivePid.atSetpoint());
         return drivePid.atSetpoint();
 
     }

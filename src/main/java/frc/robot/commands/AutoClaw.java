@@ -2,13 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 
 public class AutoClaw extends CommandBase {
-    double target;
-    double kP = 0.5;
+    double targetSpeed;
+    double kP = 1;
     double kI = 0;
     double kD = 0;
+    boolean isDone = false;
     boolean targetInit = false;
 
 
@@ -17,41 +19,29 @@ public class AutoClaw extends CommandBase {
 
    public AutoClaw(double target_){
         addRequirements(Robot.claw);
-        target = target_;
+        targetSpeed = -target_;
    }
 
    @Override
    public void initialize() {
-        armPID.setTolerance(1);
+        armPID.setTolerance(0.1);
 
    }
 
    @Override
    public void execute() {
-       if(targetInit == false){
-            Robot.claw.claw.getEncoder().setPosition(0);
-            armPID.setSetpoint(target);
-            targetInit = true;
-       }
-
-       double position = Robot.claw.claw.getEncoder().getPosition();
-       double pidCalcPos = armPID.calculate(position);
-       double clampedPidCalcPos = Math.max(-1, Math.min(1, pidCalcPos));
-
-       System.out.println(position + "," + armPID.getSetpoint() + ","+ clampedPidCalcPos + "," +  pidCalcPos);
-
-       Robot.claw.claw.set(-0.75);
+          Robot.claw.claw.set(targetSpeed);
+          isDone = true;
 
     }
 
    @Override
    public boolean isFinished() {
-        return armPID.atSetpoint();
+        return isDone;
    }
 
    @Override
    public void end(boolean interrupted) {
-     Robot.claw.claw.set(0);
    }
 
 }
