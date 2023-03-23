@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
       new AutoClaw(0.5),
       new AutoArm(-10),
       new AutoClaw(0),
-      new AutoDrive(-200)
+      new AutoDrive(-3)
     );
     autonomus2Commands = new SequentialCommandGroup(
       new AutoLift(20),
@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
       new AutoClaw(0.5),
       new AutoArm(-10),
       new AutoClaw(0),
-      new AutoDrive(-500)
+      new AutoDrive(-6)
     );
     //visionCommands =  new SequentialCommandGroup(new );
 

@@ -160,8 +160,8 @@ public class DriveTrain extends SubsystemBase{
         System.out.println(linear_speed + "," + target );
 
         //Drive the motor
-        m_leftDrive.set(-(linear_speed * (1*angular_error)/10));
-        m_rightDrive.set(-(linear_speed * angular_error)/10);
+        m_leftDrive.set(-(linear_speed * (1*angular_error)/1));
+        m_rightDrive.set(-(linear_speed * angular_error)/1);
         System.out.println("atSetpoint? " + drivePid.atSetpoint());
         return drivePid.atSetpoint();
 
