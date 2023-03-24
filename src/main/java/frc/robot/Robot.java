@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
@@ -97,20 +98,22 @@ public class Robot extends TimedRobot {
 
 
     autonomus1Commands = new SequentialCommandGroup(
-      new AutoLift(20),
-      new AutoArm(30),
-      new AutoClaw(0.5),
-      new AutoArm(-10),
-      new AutoClaw(0),
-      new AutoDrive(-3)
+      new AutoLift(40.5),
+      new AutoArm(85),
+      Commands.waitSeconds(0.5),
+      new AutoClaw(0.75),
+      new AutoArm(-30),
+      new AutoDrive(-2),
+      new AutoClaw(0)
     );
     autonomus2Commands = new SequentialCommandGroup(
-      new AutoLift(20),
-      new AutoArm(30),
-      new AutoClaw(0.5),
-      new AutoArm(-10),
-      new AutoClaw(0),
-      new AutoDrive(-6)
+      new AutoLift(40.5),
+      new AutoArm(85),
+      Commands.waitSeconds(0.5),
+      new AutoClaw(0.75),
+      new AutoArm(-30),
+      new AutoDrive(-3),
+      new AutoClaw(0)
     );
     //visionCommands =  new SequentialCommandGroup(new );
 

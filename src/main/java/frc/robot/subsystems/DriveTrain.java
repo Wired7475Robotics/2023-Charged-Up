@@ -68,7 +68,7 @@ public class DriveTrain extends SubsystemBase{
             zRotation = Controll.getDriveRightStick(Controll.X);
         } else if (Controll.getDriveBumper(Controll.LEFT)){
             xSpeed = Controll.getDriveLeftStick(Controll.Y) * MED_SPEED_COEFF;
-            zRotation = Controll.getDriveRightStick(Controll.X) * MED_SPEED_COEFF;
+            zRotation = Controll.getDriveRightStick(Controll.X) * HIGH_SPEED_COEFF;
         } else if (Controll.getDriveTrigger(Controll.RIGHT)){
             xSpeed = Controll.getDriveLeftStick(Controll.Y) *LOW_SPEED_COEFF;
             zRotation = Controll.getDriveRightStick(Controll.X) * MED_SPEED_COEFF;
