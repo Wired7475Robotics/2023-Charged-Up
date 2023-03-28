@@ -50,6 +50,9 @@ public class Controll {
 
        Trigger liftEncReset = new JoystickButton(opController, XboxController.Button.kX.value);
        liftEncReset.debounce(0.1).whileTrue(new LiftEncoderReset());
+
+       Trigger autoBalaceTrigger = new JoystickButton(driveController, XboxController.Button.kA.value);\
+       autoBalaceTrigger.debounce(0.1).whileTrue(new AutoGyro());
     }
     
 
