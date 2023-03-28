@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
 
 
     autonomus1Commands = new SequentialCommandGroup(
-      new AutoLift(40.5),
+      new AutoLift(40.4),
       new AutoArm(85),
       Commands.waitSeconds(0.5),
       new AutoClaw(0.75),
@@ -107,12 +107,12 @@ public class Robot extends TimedRobot {
       new AutoClaw(0)
     );
     autonomus2Commands = new SequentialCommandGroup(
-      new AutoLift(40.5),
+      new AutoLift(40.4),
       new AutoArm(85),
       Commands.waitSeconds(0.5),
       new AutoClaw(0.75),
       new AutoArm(-30),
-      new AutoDrive(-3),
+      //new AutoDrive(-15),
       new AutoClaw(0)
     );
     //visionCommands =  new SequentialCommandGroup(new );
@@ -156,8 +156,10 @@ public class Robot extends TimedRobot {
       case kCustomAuto:
         // Put custom auto code here
         CommandScheduler.getInstance().schedule(autonomus2Commands);
+        break;
       case kDefaultAuto:
         CommandScheduler.getInstance().schedule(autonomus1Commands);
+        break;
       default:
         // Put default auto code here
 

@@ -15,7 +15,7 @@ public class Claw extends SubsystemBase{
     }
 
     public void teleClaw(){
-        claw.set(Controll.getOpLeftStick(Controll.X)*0.75);
+        claw.set(Controll.getOpLeftStick(Controll.X)*0.9);
     }
     
     

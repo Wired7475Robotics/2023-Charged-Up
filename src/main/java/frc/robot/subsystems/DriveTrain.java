@@ -141,7 +141,7 @@ public class DriveTrain extends SubsystemBase{
      * @return
      */
     public boolean autoDrive(double target, PIDController drivePid) {
-        if (timer.get() > 5){
+        if (timer.get() > 10){
             System.out.println("Timer out of time");
             return true;
         }
