@@ -10,9 +10,9 @@ public class AutoTurn  extends CommandBase{
     private double finalTarget = 0;
     private boolean isDone = false;
     private boolean targetInit = false;
-    private double kP = 0.35;
+    private double kP = 0.30;
     private double kI = 0.0;
-    private double kD = 0.045;
+    private double kD = 0.0;
     PIDController pid = new PIDController(kP, kI, kD);
 
 
@@ -48,6 +48,7 @@ public class AutoTurn  extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return isDone;   
+        //return isDone;   
+        return false;
     }    
 }

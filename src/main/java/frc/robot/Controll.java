@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoGyroT;
+import frc.robot.commands.GyroReset;
 import frc.robot.commands.HighCountLift;
 import frc.robot.commands.LiftEncoderReset;
 import frc.robot.commands.LiftOff;
@@ -52,7 +54,10 @@ public class Controll {
        liftEncReset.debounce(0.1).whileTrue(new LiftEncoderReset());
 
        Trigger autoBalaceTrigger = new JoystickButton(driveController, XboxController.Button.kA.value);
-       autoBalaceTrigger.debounce(0.1).whileTrue(new AutoGyro());
+       autoBalaceTrigger.debounce(0.1).whileTrue(new AutoGyroT());
+
+       Trigger gyroReset = new JoystickButton(driveController, XboxController.Button.kX.value);
+       gyroReset.debounce(0.1).whileTrue(new GyroReset());
     }
     
 

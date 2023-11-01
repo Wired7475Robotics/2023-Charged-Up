@@ -18,16 +18,16 @@ public class Lift extends SubsystemBase{
     public Lift(){
         Extender = new CANSparkMax(6, MotorType.kBrushless);
         Extender.setIdleMode(IdleMode.kBrake);
-        Extender.setOpenLoopRampRate(1.5);
+        Extender.setOpenLoopRampRate(1);
        
     }
     
     public void TeleArm(){
         //System.out.println("arm code reached");
         if(Controll.getOpBumper(Controll.LEFT)){
-            Extender.set(0.50);
+            Extender.set(1);
         } else if(Controll.getOpBumper(Controll.RIGHT)){
-            Extender.set(-0.50);
+            Extender.set(-1);
         } else {
             Extender.set(0);
         }

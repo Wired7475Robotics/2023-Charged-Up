@@ -29,9 +29,12 @@ public class DriveTrain extends SubsystemBase{
     private static MotorControllerGroup m_leftDrive;
     private static MotorControllerGroup m_rightDrive;
     public static DifferentialDrive drivetrain;
+
+    // CHANGE THESE TO ADJUST SPEED
     private static double MED_SPEED_COEFF = 0.6;
     private static double LOW_SPEED_COEFF = 0.4;
     private static double HIGH_SPEED_COEFF = 0.8;
+
     private static double TIMEOUT = 15;
     private static PhotonCamera camera;
     private static PhotonCamera camera2;
@@ -39,7 +42,7 @@ public class DriveTrain extends SubsystemBase{
     public final int CUBE = 0;
     public final int CONE = 1;
     private final double MAX_LIN_SPEED = 0.4;
-    private final double MAX_ROT_SPEEED = 0.4;
+    private final double MAX_ROT_SPEEED = 0.2;
     public Timer timer;
     public DriveTrain() {
         timer = new Timer();

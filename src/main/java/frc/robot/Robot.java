@@ -4,32 +4,32 @@
 
 package frc.robot;
 
-import java.io.File;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
+// import java.io.File;
+// import java.nio.file.FileSystems;
+// import java.nio.file.Path;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Filesystem;
+// import edu.wpi.first.networktables.GenericEntry;
+// import edu.wpi.first.wpilibj.Encoder;
+// import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+// import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANDigitalInput;
+// import com.revrobotics.CANDigitalInput;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
+// import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
-import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+// import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,6 +40,7 @@ import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Auto3";
   private static final String kCustomAuto = "Auto1";
+  private static final String kDebugAuto = "Debug";
   private static final String kCubePipeline = "Cube";
   private static final String kConePipeline ="Cone";
   public static DriveTrain drivetrain;
@@ -58,7 +59,8 @@ public class Robot extends TimedRobot {
   public final SendableChooser<String> v_chooser = new SendableChooser<>();
   private SequentialCommandGroup autonomus1Commands;
   private SequentialCommandGroup autonomus2Commands;
-  private SequentialCommandGroup visionCommands;
+  private SequentialCommandGroup debugCommands;
+  // private SequentialCommandGroup visionCommands;
 
 
   /**
@@ -67,8 +69,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Auto3", kDefaultAuto);
-    m_chooser.addOption("Auto1", kCustomAuto);
+    m_chooser.setDefaultOption(kDefaultAuto, kDefaultAuto);
+    m_chooser.addOption(kCustomAuto, kCustomAuto);
+    m_chooser.addOption(kDebugAuto, kDebugAuto);
     v_chooser.setDefaultOption("Cube", kCubePipeline);
     v_chooser.addOption("Cone", kConePipeline);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -115,6 +118,8 @@ public class Robot extends TimedRobot {
       //new AutoDrive(-15),
       new AutoClaw(0)
     );
+
+    debugCommands = new SequentialCommandGroup(new AutoTurn(90));
     //visionCommands =  new SequentialCommandGroup(new );
 
     oi = new Controll();
@@ -129,11 +134,12 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
+  public void robotPeriodic() { // Updates SmartDashboard
     SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition());
     SmartDashboard.putNumber("Raw Angle", navX.getAngle());
     SmartDashboard.putNumber("Absolute Angle", absAngle());
+    SmartDashboard.putNumber("Raw Pitch", navX.getRoll());
   }
 
   /**
@@ -160,6 +166,8 @@ public class Robot extends TimedRobot {
       case kDefaultAuto:
         CommandScheduler.getInstance().schedule(autonomus1Commands);
         break;
+      case kDebugAuto:
+        CommandScheduler.getInstance().schedule(debugCommands);
       default:
         // Put default auto code here
 
