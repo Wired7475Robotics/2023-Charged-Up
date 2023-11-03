@@ -19,7 +19,7 @@ public class AutoArm extends CommandBase {
 
     PIDController armPID = new PIDController(kP,kI,kD);
     public AutoArm(){
-          addRequirements(Robot.lift);
+          addRequirements(Robot.arm);
     }
 
    public AutoArm(double target_){
@@ -39,13 +39,13 @@ public class AutoArm extends CommandBase {
        if(targetInit == false){
             armPID.setSetpoint(target);
             targetInit = true;
-            Robot.lift.Extender.getEncoder().setPosition(0);
+            Robot.arm.Extender.getEncoder().setPosition(0);
        }
 
-       position = Robot.lift.Extender.getEncoder().getPosition();
+       position = Robot.arm.Extender.getEncoder().getPosition();
        pidPosCmd = armPID.calculate(position);
        clampedPidPosCmd = Math.max(-0.5, Math.min(0.5, pidPosCmd));
-       Robot.lift.Extender.set(clampedPidPosCmd);
+       Robot.arm.Extender.set(clampedPidPosCmd);
 
        System.out.println(position + "," + armPID.getSetpoint() + ","+ clampedPidPosCmd + "," +  pidPosCmd);
 
@@ -58,7 +58,7 @@ public class AutoArm extends CommandBase {
 
    @Override
    public void end(boolean interrupted) {
-     Robot.lift.Extender.set(0);
+     Robot.arm.Extender.set(0);
      targetInit = false;
    }
 

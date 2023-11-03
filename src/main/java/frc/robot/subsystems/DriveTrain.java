@@ -115,24 +115,37 @@ public class DriveTrain extends SubsystemBase{
         var result = camera.getLatestResult();
         if (result.hasTargets()){
             return result.getBestTarget();
+        } else {
+            return new PhotonTrackedTarget();
         }
-        
-        return null;
     }
-    public boolean targetCube(PIDController linPID, PIDController anglePID, double maxlinError, double maxAngError) {
+    public boolean targetCube(PIDController anglePID, double maxlinError, double maxAngError) {
         PhotonTrackedTarget target = findCube();
 
         if(target == null)
             return true;
 
-        double linSpeed = linPID.calculate(target.getArea()) / maxlinError;
         double angSpeed = anglePID.calculate(target.getYaw()) / maxAngError;
+        System.out.println(angSpeed);
+        angSpeed = angSpeed <= 0.15 ? angSpeed : 0.15;
+        angSpeed = angSpeed >= -0.15? angSpeed : -0.15;
+        System.out.println(angSpeed);
 
-        m_leftDrive.set((linSpeed + angSpeed) * 0.5 );
-        m_rightDrive.set((linSpeed - angSpeed) * 0.5 );
+        if (Controll.getDriveBumper(Controll.RIGHT)){
+            xSpeed = Controll.getDriveLeftStick(Controll.Y);
+        } else if (Controll.getDriveBumper(Controll.LEFT)){
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) * MED_SPEED_COEFF;
+        } else if (Controll.getDriveTrigger(Controll.RIGHT)){
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) *LOW_SPEED_COEFF;
+        }  else {
+            xSpeed = Controll.getDriveLeftStick(Controll.Y) * HIGH_SPEED_COEFF;
+        }
 
+        m_leftDrive.set(angSpeed - xSpeed);
+        m_rightDrive.set(-angSpeed - xSpeed);
 
-        return linPID.atSetpoint() && anglePID.atSetpoint();
+ 
+        return !Controll.getDriveA();
     }
 
     /**An autonomus drive function

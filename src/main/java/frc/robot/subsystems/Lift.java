@@ -10,26 +10,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Controll;
 
 public class Lift extends SubsystemBase{
-    public CANSparkMax Extender;
     public CANSparkMax Elevator1;
     public CANSparkMax Elevator2;
     public DigitalInput topLimitSwitch;
 
     public Lift(){
-        Extender = new CANSparkMax(6, MotorType.kBrushless);
-        Extender.setIdleMode(IdleMode.kBrake);
-        Extender.setOpenLoopRampRate(1);
-       
-    }
+        Elevator1 = new CANSparkMax(3, MotorType.kBrushless);
+        Elevator2 = new CANSparkMax(16, MotorType.kBrushless);
+        topLimitSwitch = new DigitalInput(0);
+
+        Elevator1.setIdleMode(IdleMode.kBrake);
     
-    public void TeleArm(){
-        //System.out.println("arm code reached");
-        if(Controll.getOpBumper(Controll.LEFT)){
-            Extender.set(1);
-        } else if(Controll.getOpBumper(Controll.RIGHT)){
-            Extender.set(-1);
-        } else {
-            Extender.set(0);
-        }
+        Elevator2.setIdleMode(IdleMode.kBrake);
+        Elevator1.setOpenLoopRampRate(2);
+        Elevator2.setOpenLoopRampRate(2);        
     }
 }

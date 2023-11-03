@@ -29,7 +29,7 @@ public class MedCountLift extends CommandBase{
     PIDController armPid = new PIDController(0.5, 0, 0);
 
     public MedCountLift(){
-        addRequirements(Robot.arm);
+        addRequirements(Robot.lift);
     }
 
 
@@ -78,23 +78,23 @@ public class MedCountLift extends CommandBase{
         armPid.setTolerance(3);
 
 
-        double input = (-Robot.arm.Elevator1.getEncoder().getPosition() + Robot.arm.Elevator2.getEncoder().getPosition()) / 2;
-        System.out.println("Input :" + input + " output :" + liftPid.calculate(input)/10 + " setpoint: " + liftPid.getSetpoint() + " limitSwitch: " + Robot.arm.topLimitSwitch.get());
-        if (liftPid.calculate(input)/10 > 0.10 && Robot.arm.topLimitSwitch.get()){
+        double input = (-Robot.lift.Elevator1.getEncoder().getPosition() + Robot.lift.Elevator2.getEncoder().getPosition()) / 2;
+        System.out.println("Input :" + input + " output :" + liftPid.calculate(input)/10 + " setpoint: " + liftPid.getSetpoint() + " limitSwitch: " + Robot.lift.topLimitSwitch.get());
+        if (liftPid.calculate(input)/10 > 0.10 && Robot.lift.topLimitSwitch.get()){
             System.out.println("down");
-            Robot.arm.Elevator1.set(-0.10);
-            Robot.arm.Elevator2.set(0.10);
-        } else if ((liftPid.calculate(input)/10 < 0.20) && liftPid.calculate(input)/10 > -0.20 && Robot.arm.topLimitSwitch.get() ){
-            Robot.arm.Elevator1.set(-liftPid.calculate(input)/10);
+            Robot.lift.Elevator1.set(-0.10);
+            Robot.lift.Elevator2.set(0.10);
+        } else if ((liftPid.calculate(input)/10 < 0.20) && liftPid.calculate(input)/10 > -0.20 && Robot.lift.topLimitSwitch.get() ){
+            Robot.lift.Elevator1.set(-liftPid.calculate(input)/10);
             System.out.println("raw");
-            Robot.arm.Elevator2.set(liftPid.calculate(input)/10);
-        } else if (liftPid.calculate(input)/10 < -0.20 && Robot.arm.topLimitSwitch.get()){
-            Robot.arm.Elevator1.set(0.20);
+            Robot.lift.Elevator2.set(liftPid.calculate(input)/10);
+        } else if (liftPid.calculate(input)/10 < -0.20 && Robot.lift.topLimitSwitch.get()){
+            Robot.lift.Elevator1.set(0.20);
             System.out.println("up");
-            Robot.arm.Elevator2.set(-0.20);
+            Robot.lift.Elevator2.set(-0.20);
         } else {
-            Robot.arm.Elevator1.set(0);
-            Robot.arm.Elevator2.set(0);
+            Robot.lift.Elevator1.set(0);
+            Robot.lift.Elevator2.set(0);
         }
     }
     @Override

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AutoGyroT;
+import frc.robot.commands.AutoGyroTeleop;
 import frc.robot.commands.GyroReset;
 import frc.robot.commands.HighCountLift;
 import frc.robot.commands.LiftEncoderReset;
@@ -38,7 +38,7 @@ public class Controll {
         opController = new XboxController(1);
         mouseJoystick = new Joystick(2);
 
-       Trigger followCube = new JoystickButton(driveController, XboxController.Button.kB.value);
+       Trigger followCube = new JoystickButton(driveController, XboxController.Button.kA.value);
        followCube.debounce(0.1).whileTrue(new VisionDrive());
 
        Trigger liftTop = new JoystickButton(opController, XboxController.Button.kY.value);
@@ -53,8 +53,8 @@ public class Controll {
        Trigger liftEncReset = new JoystickButton(opController, XboxController.Button.kX.value);
        liftEncReset.debounce(0.1).whileTrue(new LiftEncoderReset());
 
-       Trigger autoBalaceTrigger = new JoystickButton(driveController, XboxController.Button.kA.value);
-       autoBalaceTrigger.debounce(0.1).whileTrue(new AutoGyroT());
+       Trigger autoBalaceTrigger = new JoystickButton(driveController, XboxController.Button.kB.value);
+       autoBalaceTrigger.debounce(0.1).whileTrue(new AutoGyroTeleop());
 
        Trigger gyroReset = new JoystickButton(driveController, XboxController.Button.kX.value);
        gyroReset.debounce(0.1).whileTrue(new GyroReset());

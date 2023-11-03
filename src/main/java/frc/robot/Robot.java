@@ -39,13 +39,14 @@ import com.revrobotics.SparkMaxLimitSwitch;
  */
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Auto3";
+  private static final String kBalenceAuto = "Auto2";
   private static final String kCustomAuto = "Auto1";
   private static final String kDebugAuto = "Debug";
   private static final String kCubePipeline = "Cube";
   private static final String kConePipeline ="Cone";
   public static DriveTrain drivetrain;
-  public static Arm arm;
   public static Lift lift;
+  public static Arm arm;
   public static Claw claw;
   public static RelativeEncoder leftEncoder;
   public static RelativeEncoder rightEncoder;
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
   public final SendableChooser<String> v_chooser = new SendableChooser<>();
   private SequentialCommandGroup autonomus1Commands;
   private SequentialCommandGroup autonomus2Commands;
+  private SequentialCommandGroup autonomus3Commands;
   private SequentialCommandGroup debugCommands;
   // private SequentialCommandGroup visionCommands;
 
@@ -70,6 +72,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_chooser.setDefaultOption(kDefaultAuto, kDefaultAuto);
+    m_chooser.addOption(kBalenceAuto, kBalenceAuto);
     m_chooser.addOption(kCustomAuto, kCustomAuto);
     m_chooser.addOption(kDebugAuto, kDebugAuto);
     v_chooser.setDefaultOption("Cube", kCubePipeline);
@@ -82,10 +85,10 @@ public class Robot extends TimedRobot {
     drivetrain.setDefaultCommand( new ArcadeDrive());
     arm = new Arm();
     lift = new Lift();
-    lift.setDefaultCommand(new ArmController());
+    arm.setDefaultCommand(new ArmController());
     claw = new Claw();
     claw.setDefaultCommand(new ClawControll());
-    ExtenderLimit = lift.Extender.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
+    ExtenderLimit = arm.Extender.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
     leftEncoder = drivetrain.leftDrive1.getEncoder();
 
    
@@ -99,7 +102,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Angle", navX.getAngle());
 
 
-
+// Close line starting point
     autonomus1Commands = new SequentialCommandGroup(
       new AutoLift(40.4),
       new AutoArm(85),
@@ -109,13 +112,30 @@ public class Robot extends TimedRobot {
       new AutoDrive(-2),
       new AutoClaw(0)
     );
+// Autobalence starting point
     autonomus2Commands = new SequentialCommandGroup(
       new AutoLift(40.4),
       new AutoArm(85),
       Commands.waitSeconds(0.5),
       new AutoClaw(0.75),
       new AutoArm(-30),
-      //new AutoDrive(-15),
+      new AutoClaw(0),
+      new AutoArm(-20),
+      new AutoDrive(-1),
+      new AutoDrive(-3),
+      new AutoDrive(-5),
+      new MedCountLift(),
+      new AutoDrive(1),
+      new AutoGyro()
+    );
+// Far line Starting point
+    autonomus3Commands = new SequentialCommandGroup(
+      new AutoLift(40.4),
+      new AutoArm(85),
+      Commands.waitSeconds(0.5),
+      new AutoClaw(0.75),
+      new AutoArm(-30),
+      new AutoDrive(-10),
       new AutoClaw(0)
     );
 
@@ -161,7 +181,7 @@ public class Robot extends TimedRobot {
     switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
-        CommandScheduler.getInstance().schedule(autonomus2Commands);
+        CommandScheduler.getInstance().schedule(autonomus3Commands);
         break;
       case kDefaultAuto:
         CommandScheduler.getInstance().schedule(autonomus1Commands);

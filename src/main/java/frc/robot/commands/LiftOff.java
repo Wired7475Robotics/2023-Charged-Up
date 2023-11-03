@@ -29,7 +29,7 @@ public class LiftOff extends CommandBase{
     PIDController armPid = new PIDController(0.5, 0, 0);
 
     public LiftOff(){
-        addRequirements(Robot.arm);
+        addRequirements(Robot.lift);
     }
 
 
@@ -43,8 +43,8 @@ public class LiftOff extends CommandBase{
     @Override
     public void execute(){
 
-        Robot.arm.Elevator1.set(0);
-        Robot.arm.Elevator2.set(0);
+        Robot.lift.Elevator1.set(0);
+        Robot.lift.Elevator2.set(0);
         /*
         if (Controll.getOpA()){
             mode = LOW;

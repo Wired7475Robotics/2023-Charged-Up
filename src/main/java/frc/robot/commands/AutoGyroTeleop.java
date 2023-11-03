@@ -4,7 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class AutoGyroT extends CommandBase{
+public class AutoGyroTeleop extends CommandBase{
     double kp = 0.25;
     double ki = 0;
     double kd = 0.05;
@@ -13,7 +13,7 @@ public class AutoGyroT extends CommandBase{
     double clampedPidPosCmd;
 
     PIDController pid = new PIDController(kp,ki,kd);
-    public AutoGyroT(){
+    public AutoGyroTeleop(){
         addRequirements(Robot.drivetrain);
     }
     @Override

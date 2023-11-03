@@ -6,7 +6,7 @@ import frc.robot.Robot;
 public class LiftEncoderReset extends CommandBase {
     
     public LiftEncoderReset(){
-        addRequirements(Robot.arm);
+        addRequirements(Robot.lift);
     }
 
     @Override
@@ -16,8 +16,8 @@ public class LiftEncoderReset extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.arm.Elevator1.getEncoder().setPosition(0);
-        Robot.arm.Elevator2.getEncoder().setPosition(0);
+        Robot.lift.Elevator1.getEncoder().setPosition(0);
+        Robot.lift.Elevator2.getEncoder().setPosition(0);
     }
 
     @Override

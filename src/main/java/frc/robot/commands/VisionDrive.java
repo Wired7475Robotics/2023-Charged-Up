@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Controll;
 import frc.robot.Robot;
 
 public class VisionDrive extends CommandBase{
@@ -10,8 +11,8 @@ public class VisionDrive extends CommandBase{
     private double TAR_YAW = 0;
 
     boolean isDone = false;
-    PIDController linPID = new PIDController(0.5, 0, 0.05);
-    PIDController anglePID = new PIDController(0.35, 0, 0.45);
+
+    PIDController anglePID = new PIDController(0.35, 0, 0.5);
 
     double maxDistError = 0;
     double maxAngError = 0;
@@ -22,9 +23,6 @@ public class VisionDrive extends CommandBase{
 
     @Override
     public void initialize(){
-        linPID.setSetpoint(TAR_AREA);
-        linPID.setTolerance(3);
-        maxDistError = TAR_AREA - Robot.drivetrain.findCube().getArea();
 
         anglePID.setSetpoint(TAR_YAW);
         anglePID.setTolerance(2);
@@ -33,7 +31,8 @@ public class VisionDrive extends CommandBase{
 
     @Override
     public void execute(){
-        isDone = Robot.drivetrain.targetCube(linPID, anglePID, maxDistError, maxAngError);
+        isDone = Robot.drivetrain.targetCube(anglePID, MAX_FOV, maxAngError);
+        System.out.println(isDone);
     }
     @Override
     public boolean isFinished(){

@@ -2,11 +2,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Lift;
 
 public class ArmController extends CommandBase{
     public ArmController(){
-        addRequirements(Robot.lift);
+        addRequirements(Robot.arm);
     }
     
     @Override 
@@ -16,7 +16,7 @@ public class ArmController extends CommandBase{
 
     @Override
     public void execute(){
-        Robot.lift.TeleArm();
+        Robot.arm.TeleArm();
     }
     @Override
     public boolean isFinished(){
