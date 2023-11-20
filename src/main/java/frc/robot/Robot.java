@@ -119,14 +119,8 @@ public class Robot extends TimedRobot {
       Commands.waitSeconds(0.5),
       new AutoClaw(0.75),
       new AutoArm(-30),
-      new AutoClaw(0),
-      new AutoArm(-20),
-      new AutoDrive(-1),
-      new AutoDrive(-3),
-      new AutoDrive(-5),
-      new MedCountLift(),
-      new AutoDrive(1),
-      new AutoGyro()
+      new AutoClaw(0)
+      
     );
 // Far line Starting point
     autonomus3Commands = new SequentialCommandGroup(
@@ -188,6 +182,12 @@ public class Robot extends TimedRobot {
         break;
       case kDebugAuto:
         CommandScheduler.getInstance().schedule(debugCommands);
+        break;
+      case kBalenceAuto:
+        CommandScheduler.getInstance().schedule(autonomus2Commands);
+        System.out.println("auto2");
+        break;
+        
       default:
         // Put default auto code here
 

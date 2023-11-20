@@ -18,15 +18,15 @@ public class AutoGyro extends CommandBase{
     }
     @Override
     public void initialize() {
-        pid.setTolerance(0.2);
+        pid.setTolerance(9);
         pid.setSetpoint(0);
-        Robot.navX.reset();
+        
     }
     @Override
     public void execute() {
         
         pidPosCmd = pid.calculate(Robot.navX.getRoll());
-        clampedPidPosCmd = Math.max(-0.1, Math.min(0.1, pidPosCmd * 10));
+        clampedPidPosCmd = Math.max(-0.3, Math.min(0.3, pidPosCmd * 10));
         Robot.drivetrain.drivetrain.arcadeDrive(-clampedPidPosCmd,0);
         System.out.println(pidPosCmd +","+ clampedPidPosCmd);
     }

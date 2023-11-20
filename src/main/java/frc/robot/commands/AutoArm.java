@@ -23,7 +23,7 @@ public class AutoArm extends CommandBase {
     }
 
    public AutoArm(double target_){
-        addRequirements(Robot.lift);
+        addRequirements(Robot.arm);
         target = target_ / armConvFactor;
         System.out.println(target + ","+ target_ + ","+ armConvFactor);
    }
